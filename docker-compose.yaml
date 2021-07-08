@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    environment: 
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=docker
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+  
+  app:
+    build: .
+    ports:
+      - 3333:3333
+    links:
+      - postgres
+    depends_on: 
+      - postgres
+
