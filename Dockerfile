@@ -1,13 +1,15 @@
 FROM node:lts-alpine
 
-WORKDIR /src
+WORKDIR /app
 
-ADD package.json /src
+ADD package.json /app
 
 RUN npm install
 
-ADD . /src
+ADD . /app
 
 RUN npm run build
 
-CMD ["npm", "start"]
+RUN npm install --global nodemon
+
+CMD DB_HOST=postgres npx knex --knexfile /app/src/database/knexfile.ts migrate:latest && nodemon --ext ts --exec "npm run build && npm start" --watch ./src

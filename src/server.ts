@@ -1,8 +1,12 @@
-import http from 'http'
+import express from 'express'
 
-http.createServer((request, response) => {
-  if (request.method === 'GET') {
-    response.writeHead(200, {'Content-Type': 'application/json'})
-    response.end(JSON.stringify({ ok: true }))
-  }
-}).listen(3333)
+import app from '@/app'
+
+const server = express();
+
+server.use(app);
+
+const port = process.env.SERVER_PORT || '3333';
+ 
+server.listen(port, () => console.log('Running at ' + port));
+
